@@ -3,7 +3,7 @@ var express = require('express'),
   app = express(),
   http = require('http').createServer(app),
   io = require('socket.io')(http),
-  /*fs = require('fs'),*/
+  fs = require('fs'),
   cookieParser = require('cookie-parser'),
   minifyHTML = require('express-minify-html'),
   bodyParser = require('body-parser'),
@@ -51,6 +51,18 @@ app.set('views', viewDir)
 http.listen(port, () => console.log('Iniciando Express y Socket.IO en localhost: %d', port));
 
 io.on("connection", (socket) => {
+
+  socket.on('mostrarTodo', (data) => {
+    let msj = data.msj
+    console.log(msj)
+    console.log(`${__dirname}/public/js/data.json`)
+    fs.readFile(`${__dirname}/public/js/data.json`, (err, data) => {
+        if (err) throw err
+        let propiedades = JSON.parse(data) //JSON.stringify(data);
+        console.log(propiedades)
+        socket.emit("mostrarTodo", {propiedades:propiedades})
+    });
+  })
 
 })
 

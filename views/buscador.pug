@@ -47,24 +47,26 @@ html(lang='es')
           .card-image
             img(src='/img/home.jpg')
           .card-stacked
-            div
-              b Dirección:
-              p &nbsp;
-            div
-              b Ciudad:
-              p &nbsp;
-            div
-              b Teléfono:
-              p &nbsp;
-            div
-              b Código postal:
-              p &nbsp;
-            div
-              b Precio:
-              p &nbsp;
-            div
-              b Tipo:
-              p &nbsp;
+            .card-content
+              div
+                b Dirección:
+                p &nbsp;
+              div
+                b Ciudad:
+                p &nbsp;
+              div
+                b Teléfono:
+                p &nbsp;
+              div
+                b Código postal:
+                p &nbsp;
+              div
+                b Precio:
+                p &nbsp;
+              div
+                b Tipo:
+                p &nbsp;
           .card-action.right-align
             a(href='#') Ver más
+    script(src="/socket.io/socket.io.js")
     script(src='/js/app.js')

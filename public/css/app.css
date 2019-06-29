@@ -46,3 +46,11 @@ div.lista {
   width: 50%;
   margin: 0 auto !important;
 }
+
+.card .card-content p {
+  display: inline-block;
+}
+
+div.lista {
+  overflow: hidden;
+}
