@@ -1,0 +1,70 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, user-scalable=no, initial-scale=1.0')
+    title #{title}
+    link(rel='shortcut icon' href='/img/favicon.png')
+    meta(name='theme-color' content='#000000')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css')
+    script(src='https://code.jquery.com/jquery-3.1.0.min.js', integrity='sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js')
+    link(rel='stylesheet', href='/css/ion.rangeSlider.css')
+    link(rel='stylesheet', href='/css/ion.rangeSlider.skinFlat.css')
+    script(src='/js/ion.rangeSlider.min.js')
+    link(rel='stylesheet', href='/css/app.css')
+  body
+    .navbar-fixed
+      nav
+        .blue.darken-3.nav-wrapper.center-align
+          h4 Buscador de Propiedades
+    .row
+      .col.m4
+        .card.horizontal
+          .container.center-align
+            .switch
+              h5 Búsqueda Personalizada
+              label
+                | Desactivada
+                input(id='checkPersonalizada', type='checkbox')
+                span.lever
+                | Activada
+            #personalizada.row.invisible
+              .row
+                | Ciudad
+                select(id='ciudad')
+                  option(value='', selected) Escoge una ciudad
+              .row
+                | Tipo
+                select(id='tipo')
+                  option(value='', selected) Escoge un tipo
+              .row
+                | Precio
+                input(id='rangoPrecio', type='text')
+            button.btn.waves-effect.waves-light.blue(id='buscar') Ver todos
+      .col.m8.lista
+        //.card.horizontal
+          .card-image
+            img(src='/img/home.jpg')
+          .card-stacked
+            div
+              b Dirección:
+              p &nbsp;
+            div
+              b Ciudad:
+              p &nbsp;
+            div
+              b Teléfono:
+              p &nbsp;
+            div
+              b Código postal:
+              p &nbsp;
+            div
+              b Precio:
+              p &nbsp;
+            div
+              b Tipo:
+              p &nbsp;
+          .card-action.right-align
+            a(href='#') Ver más
+    script(src='/js/app.js')

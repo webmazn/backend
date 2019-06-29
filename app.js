@@ -2,16 +2,16 @@
 var express = require('express'),
   app = express(),
   http = require('http').createServer(app),
-  fs = require('fs'),
+  io = require('socket.io')(http),
+  /*fs = require('fs'),*/
   cookieParser = require('cookie-parser'),
-  cookieSession = require('cookie-session'),
   minifyHTML = require('express-minify-html'),
   bodyParser = require('body-parser'),
   restFul = require('express-method-override')('_method'),
   pug = require('pug'),
   routes = require('./routes/routes'),
   publicDir = express.static(`${__dirname}/public`),
-  viewDir = `${__dirname}/views/views`,
+  viewDir = `${__dirname}/views`,
   port = (process.env.PORT || 7777)
 
 app.set('views', viewDir)
@@ -36,7 +36,6 @@ app.set('views', viewDir)
       minifyJS: true
     }
   }))
-  .use(browserClient())
   .use(cookieParser())
   .use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*')
