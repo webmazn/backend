@@ -67,18 +67,53 @@ io.on("connection", (socket) => {
         }
         let ciudades = arrayCiudad.sort(),
           tipos = arrayTipo.sort()
-        socket.emit("cargarControles", {ciudades:ciudades, tipos:tipos})
+
+        let ciudadesObjeto = JSON.stringify(ciudades),
+          tiposObjeto = JSON.stringify(tipos)
+        socket.emit("cargarControles", {ciudades:ciudadesObjeto, tipos:tiposObjeto})
     });
   })
 
   socket.on('mostrarPropiedades', (data) => {
-    let msj = data.msj
-    console.log(msj)
+    let msj = data.msj,
+      ciudad = data.ciudad,
+      tipo = data.tipo,
+      precio = data.precio.split(';'),
+      precioInicio = (precio[0]=='' || typeof precio[0] === 'undefined') ? 0 : (parseInt(precio[0])==0) ? 1 : parseInt(precio[0]),
+      precioFin = (precio[1]=='' || typeof precio[1] === 'undefined') ? 0 : parseInt(precio[1]),
+      arrayPropiedades = [],
+      propiedadesObjeto = ''
+    console.log("msj: "+msj)
+
     fs.readFile(`${__dirname}/public/js/data.json`, (err, data) => {
         if (err) throw err
-        let propiedades = JSON.parse(data) //JSON.stringify(data);
-        socket.emit("mostrarPropiedades", {propiedades:propiedades})
-    });
+        let propiedades = JSON.parse(data), //JSON.stringify(data);
+          longitud = propiedades.length
+        if(ciudad!='' || tipo!='' || precio!=''){
+          for(let i=0; i<longitud; i++){
+            let precioJSON = propiedades[i].Precio,
+              precioSinDolar = precioJSON.replace('$',''),
+              precioSinComa = precioSinDolar.replace(',',''),
+              precioFinal = parseInt(precioSinComa),
+              ciudadJSON = propiedades[i].Ciudad,
+              tipoJSON = propiedades[i].Tipo
+            if(precioInicio!="" && precioFin!="" && ciudad=="" && tipo==""){
+              if(precioFinal>=precioInicio && precioFinal<=precioFin) arrayPropiedades.push(propiedades[i])
+            }else if(precioInicio!="" && precioFin!="" && ciudad!="" && tipo==""){
+              if(precioFinal>=precioInicio && precioFinal<=precioFin && ciudadJSON == ciudad) arrayPropiedades.push(propiedades[i])
+            }else if(precioInicio!="" && precioFin!="" && ciudad=="" && tipo!=""){
+              if(precioFinal>=precioInicio && precioFinal<=precioFin && tipoJSON == tipo) arrayPropiedades.push(propiedades[i])
+            }else if(precioInicio!="" && precioFin!="" && ciudad!="" && tipo!=""){
+              if(precioFinal>=precioInicio && precioFinal<=precioFin && ciudadJSON == ciudad && tipoJSON == tipo) arrayPropiedades.push(propiedades[i])
+            }
+          } console.log('por controles si')
+          propiedadesObjeto = JSON.stringify(arrayPropiedades)
+        }else{ console.log('por controles no')
+          propiedadesObjeto = propiedades
+        }
+        //let propiedadesObjeto = (arrayPropiedades=='') ? propiedades : JSON.stringify(arrayPropiedades)
+        socket.emit("mostrarPropiedades", {propiedades:propiedadesObjeto})
+    })
   })
 
 })
