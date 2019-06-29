@@ -52,15 +52,32 @@ http.listen(port, () => console.log('Iniciando Express y Socket.IO en localhost:
 
 io.on("connection", (socket) => {
 
-  socket.on('mostrarTodo', (data) => {
+  socket.on('cargarControles', (data) => {
+    let msj = data.msj,
+      arrayCiudad = [],
+      arrayTipo = []
+    console.log(msj)
+    fs.readFile(`${__dirname}/public/js/data.json`, (err, data) => {
+        if (err) throw err
+        let propiedades = JSON.parse(data), //JSON.stringify(data);
+          longitud = propiedades.length
+        for(let i=0; i<longitud; i++){
+          if(!arrayCiudad.includes(propiedades[i].Ciudad)) arrayCiudad.push(propiedades[i].Ciudad)
+          if(!arrayTipo.includes(propiedades[i].Tipo)) arrayTipo.push(propiedades[i].Tipo)
+        }
+        let ciudades = arrayCiudad.sort(),
+          tipos = arrayTipo.sort()
+        socket.emit("cargarControles", {ciudades:ciudades, tipos:tipos})
+    });
+  })
+
+  socket.on('mostrarPropiedades', (data) => {
     let msj = data.msj
     console.log(msj)
-    console.log(`${__dirname}/public/js/data.json`)
     fs.readFile(`${__dirname}/public/js/data.json`, (err, data) => {
         if (err) throw err
         let propiedades = JSON.parse(data) //JSON.stringify(data);
-        console.log(propiedades)
-        socket.emit("mostrarTodo", {propiedades:propiedades})
+        socket.emit("mostrarPropiedades", {propiedades:propiedades})
     });
   })
 

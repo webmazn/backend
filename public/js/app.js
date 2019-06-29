@@ -31,16 +31,27 @@ var MyApp = (function () {
 })();
 $(document).ready(function () {
   MyApp.IniciarBuscador();
+  io.emit("cargarControles", {msj:'Cargar controles...'});
   $("#buscar").on("click",function(){
-    console.log('mostrar todo');
-    io.emit("mostrarTodo", {msj:'Cargar todo...'});
+    io.emit("mostrarPropiedades", {msj:'Cargar propiedades...'});
   })
 });
-io.on("mostrarTodo", function (data) {
-  let propiedades = data.propiedades;
-  let longitud = propiedades.length;
-  let lista = $(".lista");
-  let html = '';
+io.on("cargarControles", function (data) {
+  let ciudades = data.ciudades,
+    tipos = data.tipos;
+    console.log(ciudades.length+"+"+tipos.length);
+  for(let i=0; i<ciudades.length; i++){
+    $("#ciudad").append(`<option value="${ciudades[i]}">${ciudades[i]}</option>`).formSelect();
+  }
+  for(let j=0; j<tipos.length; j++){
+    $("#tipo").append(`<option value="${tipos[j]}">${tipos[j]}</option>`).formSelect();
+  }
+})
+io.on("mostrarPropiedades", function (data) {
+  let propiedades = data.propiedades,
+    longitud = propiedades.length,
+    lista = $(".lista"),
+    html = '';
   for(let i=0; i<longitud; i++){
     html += `
       <div class="card horizontal" data-id="${propiedades[i].Id}">

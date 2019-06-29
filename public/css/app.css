@@ -1,6 +1,7 @@
 
 body {
   background-color: #bdc3c7;
+  overflow: hidden;
 }
 
 nav div > h4 {
@@ -30,8 +31,9 @@ div.lista .card:hover {
 }
 
 div.lista {
-  max-height: 100%;
-  overflow: scroll;
+  max-height: calc(100vh - 64px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .lista img {
@@ -49,8 +51,4 @@ div.lista {
 
 .card .card-content p {
   display: inline-block;
-}
-
-div.lista {
-  overflow: hidden;
 }
